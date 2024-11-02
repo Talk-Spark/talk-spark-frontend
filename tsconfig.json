@@ -18,8 +18,10 @@
         "name": "next"
       }
     ],
+    //필요한 path alias는 여기다가 추가하기!
     "paths": {
-      "@/*": ["./src/*"]
+      "@/src/*": ["./src/*"],
+      "@/public/*" : ["./public/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
