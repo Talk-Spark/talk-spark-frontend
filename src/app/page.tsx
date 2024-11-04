@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description: "Welcome to the home page of our Next.js app",
 };
 
+//반드시 export만 해주면 됨.(컴포넌트명은 뭐가 되든 상관 x)
 export default function HomePage() {
   console.log("hi");
   return (

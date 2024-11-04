@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "../components/Header";
 import { ReactNode } from "react";
 
+//font를 직접 다운로드해서 사용하는 예시
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
