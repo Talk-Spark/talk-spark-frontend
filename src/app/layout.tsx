@@ -20,6 +20,7 @@ type RootLayoutProps = {
   children: ReactNode;
 };
 
+//SEO를 위한 메타데이터(레이아웃 전체에 적용)
 export const metadata: Metadata = {
   title: "My Next.js App",
   description: "A sample Next.js application",
