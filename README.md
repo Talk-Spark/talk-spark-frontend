@@ -1,3 +1,8 @@
+## 만약 "use client 지시어를 사용하지 않고 코드를 작성한뒤, 빌드했을 때의 모습"
+![image](https://github.com/user-attachments/assets/f89ab713-0b21-449c-b0ab-f9503183a8e0)
+
+정상적으로 빌드가 막힌다!
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
