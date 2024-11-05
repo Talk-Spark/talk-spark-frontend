@@ -41,7 +41,10 @@ const config: Config = {
           12: "#1A1E22",
         },
         main: {
-          pink: "#FF006A",
+          pink: {
+            DEFAULT: "#FF006A",
+            15: "rgba(255, 0, 106, 0.15)", // 15% 투명도 적용된 main pink
+          },    
         },
         sub: {
           palePink: {
@@ -138,6 +141,10 @@ const config: Config = {
           { lineHeight: "145%", letterSpacing: "-0.001em", fontWeight: "500" },
         ], // Medium
       },
+      // Gradient
+      backgroundImage: {
+        'gradient-35-pink': "linear-gradient(180deg, rgba(255, 204, 225, 0.35) 0%, rgba(255, 0, 106, 0.35) 100%))",
+      }
     },
   },
   plugins: [],
