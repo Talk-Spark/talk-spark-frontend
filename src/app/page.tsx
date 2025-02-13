@@ -52,7 +52,7 @@ export default function HomePage() {
 async function refreshAccessToken(refreshToken: string) {
   try {
     const response = await fetch(
-      `https://talkspark-dev-api.p-e.kr/api/member/refresh?refreshToken=${refreshToken}`,
+      `https://talkspark.site/api/member/refresh?refreshToken=${refreshToken}`,
       {
         method: "GET",
       },

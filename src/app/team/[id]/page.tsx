@@ -74,7 +74,7 @@ const TeamDetail = () => {
 
   useEffect(() => {
     if (user) {
-      socketRef.current = io("https://talkspark-dev-api.p-e.kr/", {
+      socketRef.current = io("https://talkspark.site", {
         transports: ["websocket"],
       });
 
@@ -129,7 +129,7 @@ const TeamDetail = () => {
           //방 퇴장시
           //console.log(gameStart);
           if (!gameStartRef.current) {
-            console.log("나간다")
+            console.log("나간다");
             socketRef.current.emit("leaveRoom", {
               roomId: id,
               accessToken: user.accessToken,
