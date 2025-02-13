@@ -3,12 +3,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 // import { useParams } from "next/navigation";
-import { useParams, useRouter } from "next/navigation";
+import { get } from "@/src/apis";
 import ProfileImage from "@/src/components/ProfileImage";
 import FindRoom from "@/src/components/entry/FindRoom";
-import { Start } from "@mui/icons-material";
-import { get } from "@/src/apis";
 import { getUserData, UserLocalData } from "@/src/utils";
+import { Start } from "@mui/icons-material";
+import { useParams, useRouter } from "next/navigation";
 import io from "socket.io-client";
 
 //  참가자들 정보
@@ -74,7 +74,7 @@ const TeamDetail = () => {
 
   useEffect(() => {
     if (user) {
-      socketRef.current = io("https://talkspark-dev-api.p-e.kr/", {
+      socketRef.current = io("https://talkspark.site/", {
         transports: ["websocket"],
       });
 
@@ -129,7 +129,7 @@ const TeamDetail = () => {
           //방 퇴장시
           //console.log(gameStart);
           if (!gameStartRef.current) {
-            console.log("나간다")
+            console.log("나간다");
             socketRef.current.emit("leaveRoom", {
               roomId: id,
               accessToken: user.accessToken,
