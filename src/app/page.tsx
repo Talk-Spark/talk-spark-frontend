@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 //해당 페이지에서 적절하게 navgiate하는 로직 구성하기
 export default function HomePage() {
@@ -52,7 +52,7 @@ export default function HomePage() {
 async function refreshAccessToken(refreshToken: string) {
   try {
     const response = await fetch(
-      `https://talkspark-dev-api.p-e.kr/api/member/refresh?refreshToken=${refreshToken}`,
+      `https://talkspark.site/api/member/refresh?refreshToken=${refreshToken}`,
       {
         method: "GET",
       },
