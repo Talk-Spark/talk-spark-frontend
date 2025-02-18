@@ -69,7 +69,11 @@ const TeamDetail = () => {
 
   useEffect(() => {
     const userData = getUserData();
-    setUser(userData);
+    if (!userData) {
+      router.push("/");
+    } else {
+      setUser(userData);
+    }
   }, []);
 
   useEffect(() => {
