@@ -1,5 +1,3 @@
-import { access } from "fs";
-
 export type UserLocalData = {
   accessToken: string;
   kakaoId: string;
@@ -10,20 +8,26 @@ export type UserLocalData = {
 } | null;
 
 export const getUserData = (): UserLocalData => {
-  const user = JSON.parse(localStorage.getItem("user") || "");
-  if (!user) return null;
+  const userString = localStorage.getItem("user");
+  if (!userString) return null; // user 데이터가 없으면 null 반환
 
-  return {
-    accessToken: user.accessToken,
-    kakaoId: user.kakaoId,
-    password: user.password,
-    refreshToken: user.refreshToken,
-    roleNames: user.roleNames,
-    sparkUserId: user.sparkUserId,
-  };
+  try {
+    const user = JSON.parse(userString);
+    return {
+      accessToken: user.accessToken,
+      kakaoId: user.kakaoId,
+      password: user.password,
+      refreshToken: user.refreshToken,
+      roleNames: user.roleNames,
+      sparkUserId: user.sparkUserId,
+    };
+  } catch (error) {
+    console.error("JSON 파싱 오류:", error);
+    return null; // 파싱 실패 시 null 반환
+  }
 };
 
-export const getDataFromLocalStorage = (key : string) => {
+export const getDataFromLocalStorage = (key: string) => {
   const data = localStorage.getItem(key); // localStorage에서 데이터를 가져옴
   if (data) {
     try {
