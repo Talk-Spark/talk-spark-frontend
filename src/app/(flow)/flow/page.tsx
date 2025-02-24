@@ -9,12 +9,12 @@ const BeforeSelect = dynamic(
 );
 // import AfterSelect from "@/src/components/flow/AfterSelect";
 // import BeforeSelect from "@/src/components/flow/BeforeSelect";
+import Header from "@/src/components/Headers/Header";
 import { getUserData } from "@/src/utils";
 import dynamic from "next/dynamic";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MutableRefObject, Suspense, useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
-import { useRouter, useSearchParams } from "next/navigation";
-import Header from "@/src/components/Headers/Header";
 
 // export const CARD_FLOW = [
 //   "엠비티아이",
@@ -164,7 +164,7 @@ const Flow = () => {
   useEffect(() => {
     //여기서 다시 연결
     console.log("연결 중!");
-    socketRef.current = io("https://talkspark.site", {
+    socketRef.current = io("https://talkspark.site/", {
       transports: ["websocket"],
     });
     console.log(socketRef.current);
