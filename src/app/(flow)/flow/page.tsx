@@ -334,7 +334,10 @@ const Flow = () => {
                 quizInfo?.options as string[],
                 quizInfo?.correctAnswer as string,
               )}
-              answerCount={correctedPeople?.length as number}
+              answerCount={
+                correctedPeople?.filter((person) => person.correct)
+                  .length as number
+              }
               isAllCorrect={isAllCorrect}
               storageCard={storageCard as StorageCardProps}
             />
