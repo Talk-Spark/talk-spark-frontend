@@ -7,6 +7,7 @@ const BeforeSelect = dynamic(
   () => import("@/src/components/flow/BeforeSelect"),
   { ssr: false },
 );
+import { get } from "@/src/apis";
 // import AfterSelect from "@/src/components/flow/AfterSelect";
 // import BeforeSelect from "@/src/components/flow/BeforeSelect";
 import Header from "@/src/components/Headers/Header";
@@ -123,7 +124,7 @@ const Flow = () => {
   const user = getUserData();
   const router = useRouter();
 
-  const [isHost, setIsHost] = useState(!!localStorage.getItem("isGameHost")); //방장 여부
+  const [isHost, setIsHost] = useState<boolean>(false); //방장 여부
 
   const [isReady, setIsReady] = useState(false);
   const [cardStep, setCardStep] = useState(0); //소켓으로 on 해올 예정 -> todo: 아마 현재 문제가 뭔지에 대해서...
@@ -155,6 +156,17 @@ const Flow = () => {
   const socketRef = useRef<any>(null);
 
   useEffect(() => {
+    const fetchHostStatus = async () => {
+      try {
+        const response = await get(`/api/rooms/is-host?roomId=${roomId}`);
+        setIsHost(response.data as boolean);
+      } catch (error) {
+        console.error("Error fetching host status:", error);
+      }
+    };
+
+    fetchHostStatus();
+
     //여기서 다시 연결
     console.log("연결 중!");
     socketRef.current = io("https://talkspark.site/", {

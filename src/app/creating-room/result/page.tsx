@@ -1,11 +1,11 @@
 "use client";
 
-import Button from "@/src/components/common/Button";
 import kakaoImage from "@/public/Image/onBoarding/kakaoImage.svg";
-import Image from "next/image";
+import Button from "@/src/components/common/Button";
 import QrCode from "@/src/components/QrCode/QrCode";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 
 const Result = () => {
   const router = useRouter();
@@ -60,9 +60,9 @@ const Result = () => {
   };
 
   const handleHostStartGame = () => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("isGameHost", "true");
-    }
+    // if (typeof window !== "undefined") {
+    //   localStorage.setItem("isGameHost", "true");
+    // }
     router.push(`/team/${roomId}`);
   };
 
