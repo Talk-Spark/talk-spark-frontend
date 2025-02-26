@@ -41,7 +41,7 @@ const TeamDetail = () => {
   const router = useRouter();
 
   const [user, setUser] = useState<UserLocalData | null>(null);
-  const [isHost, setIsHost] = useState(!!localStorage.getItem("isGameHost"));
+  const [isHost, setIsHost] = useState<boolean | null>(null);
   const { id } = useParams(); // roomId 파라미터 가져온 후 get
   const [teamData, setTeamData] = useState<GameRoomDetail | null>(null);
   const [userDatas, setUserDatas] = useState<Participant[] | null>(null);
@@ -114,9 +114,10 @@ const TeamDetail = () => {
 
       const setHostAndRoomData = async () => {
         try {
-          //const response = await get(`/api/rooms/is-host?roomId=${id}`); //host 여부 받아오는 api
-          const response2 = await get(`/api/rooms/${id}`); //방에 대한 정보 받아오는 api
-          //setIsHost(response.data as boolean);
+          const response = await get(`/api/rooms/is-host?roomId=${id}`); // 방장 여부 확인 API
+          setIsHost(response.data as boolean);
+
+          const response2 = await get(`/api/rooms/${id}`); // 방 정보 가져오는 API
           setTeamData(response2.data as GameRoomDetail);
           console.log(response2.data);
         } catch (err) {
@@ -126,7 +127,16 @@ const TeamDetail = () => {
 
       setHostAndRoomData();
 
-      // window.addEventListener("beforeunload", handleBeforeUnload);
+      const handleBeforeUnload = () => {
+        socketRef.current.emit("leaveRoom", {
+          roomId: id,
+          accessToken: user.accessToken,
+          isHost,
+        });
+        socketRef.current.disconnect();
+      };
+
+      window.addEventListener("beforeunload", handleBeforeUnload);
 
       return () => {
         if (socketRef.current) {
@@ -141,7 +151,7 @@ const TeamDetail = () => {
             });
           }
           socketRef.current.disconnect();
-          // window.removeEventListener("beforeunload", handleBeforeUnload);
+          window.removeEventListener("beforeunload", handleBeforeUnload);
         }
       };
     }
