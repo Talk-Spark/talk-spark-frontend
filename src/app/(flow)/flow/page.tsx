@@ -347,7 +347,7 @@ const Flow = () => {
                 quizInfo?.correctAnswer as string,
               )}
               answerCount={
-                correctedPeople?.filter((person) => person.correct)
+                correctedPeople?.filter((person) => person.isCorrect)
                   .length as number
               }
               isAllCorrect={isAllCorrect}

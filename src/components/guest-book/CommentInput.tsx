@@ -4,7 +4,7 @@ import fullCheckBox from "@/public/guest-book/fullCheckBox.svg";
 import sendIcon from "@/public/guest-book/sendIcon.svg";
 
 import Image from "next/image";
-import NewIcon from "@/public/guest-book/newIcon2.svg";
+import NewIcon from "@/public/guest-book/newIconS.svg";
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { instance } from "@/src/apis";
