@@ -18,6 +18,7 @@ import {
   StorageCardProps,
 } from "@/src/app/(flow)/flow/page";
 import { getUserData } from "@/src/utils";
+import { post } from "@/src/apis";
 
 interface AfterSelectProps {
   cardStep: number;
@@ -61,15 +62,17 @@ const AfterSelect = ({
     socketRef.current.emit("next", { roomId });
   };
 
-  const handleNextPerson = () => {
+  const handleNextPerson = async () => {
     socketRef.current.emit("next", { roomId });
 
     //최종 스코어 보기
     if (isGameEnd) {
-      socketRef.current.emit("getEnd", {
-        roomId,
-        sparkUserId: user?.sparkUserId,
-      });
+      const requestData = {
+        roomId: roomId,
+        playerId: user?.sparkUserId,
+      };
+
+      const res = await post("/api/game/end", requestData);
     }
   };
 
