@@ -96,6 +96,7 @@ const DetailCard = () => {
     initialSlide: 0,
     afterChange: (index: number) => setCurrentIndex(index),
   };
+
   const router = useRouter();
 
   if (otherCards.length < 1) {

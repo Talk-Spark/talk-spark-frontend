@@ -271,16 +271,31 @@ const SearchAndGetCard = (props: NameCardProps) => {
 
   const handleSearch = () => {
     const keyword = searchValue.trim().toLowerCase(); // 검색어를 소문자로 변환
+
+    const calculateSimilarity = (str1: string, str2: string): number => {
+      // 간단한 유사도 계산: 검색어가 포함된 위치와 길이 비교
+      const index = str1.indexOf(str2);
+      return index !== -1 ? str2.length - index : -1; // 일치 길이 - 포함된 위치
+    };
+
     if (ver === "명함" && teamData && setTeamData) {
-      const filteredTeams = teamData.filter(
-        (team) => team.cardHolderName.toLowerCase().includes(keyword), // 팀 이름으로 검색
-      );
+      const filteredTeams = teamData
+        .filter((team) => team.cardHolderName.toLowerCase().includes(keyword)) // 필터링
+        .sort(
+          (a, b) =>
+            calculateSimilarity(b.cardHolderName.toLowerCase(), keyword) -
+            calculateSimilarity(a.cardHolderName.toLowerCase(), keyword),
+        ); // 유사도로 정렬
       console.log(filteredTeams);
       setFilterDataC(filteredTeams);
     } else if (ver === "방명록" && roomData && setRoomData) {
-      const filteredRooms = roomData.filter(
-        (room) => room.roomName.toLowerCase().includes(keyword), // 방 이름으로 검색
-      );
+      const filteredRooms = roomData
+        .filter((room) => room.roomName.toLowerCase().includes(keyword)) // 필터링
+        .sort(
+          (a, b) =>
+            calculateSimilarity(b.roomName.toLowerCase(), keyword) -
+            calculateSimilarity(a.roomName.toLowerCase(), keyword),
+        ); // 유사도로 정렬
       setFilterDataR(filteredRooms);
     }
   };

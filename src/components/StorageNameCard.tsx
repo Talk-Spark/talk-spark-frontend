@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import CardTop from "./Storage/card/CardTop";
 import CardBottom from "./Storage/card/CardBotttom";
 import { toPng } from "html-to-image";
-import { filter } from "lodash";
 
 type CardDataProps = {
   // 기본 정보
@@ -71,6 +70,17 @@ const StorageNameCard: React.FC<NameCardProps> = ({
 
   const cardRef = useRef<HTMLDivElement>(null);
 
+  const filter = (node: HTMLElement) => {
+    // 편집, 다운로드 버튼 제거
+    if (node.tagName === "BUTTON") {
+      return false;
+    }
+    const exclusionClasses = ["remove-me", "secret-div"];
+    return !exclusionClasses.some((classname) =>
+      node.classList?.contains(classname),
+    );
+  };
+
   // 명함 이미지 저장 html-to-image
   const handleDownload = () => {
     const cardElement = cardRef.current;
@@ -103,7 +113,7 @@ const StorageNameCard: React.FC<NameCardProps> = ({
           .catch((err) => {
             console.log(err);
           });
-      }, 500); // 300ms 지연
+      }, 2500); // 지연 시간 증가 테스트
     }
   };
 

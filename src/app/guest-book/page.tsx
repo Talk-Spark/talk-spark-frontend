@@ -4,7 +4,6 @@ import Header from "@/src/components/Headers/Header";
 import { useRouterWrapper } from "@/src/components/Router/RouterWrapperProvider";
 import Template from "@/src/components/Router/template";
 import SearchAndGetCard from "@/src/components/Storage/SearchAndGetCard";
-import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 
 const Page = () => {
@@ -69,7 +68,7 @@ const Page = () => {
 
         // 응답 데이터가 올바른 형식인지 확인
         const data = response.data.data as ApiResponse;
-
+        console.log(data.guestBookRooms);
         if (data && data.guestBookRooms) {
           setRoomData(data.guestBookRooms); // 응답 데이터를 RoomData 형식으로 설정
         }

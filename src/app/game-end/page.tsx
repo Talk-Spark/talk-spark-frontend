@@ -21,31 +21,28 @@ const DUMMY_DATA: Player[] = [
   { name: "Eve", score: 88 },
 ];
 
-
-
 export default function GameEnd() {
   const router = useRouter();
   const [finalData, setFinalData] = useState<Player[] | null>(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     const finalPeople = getDataFromLocalStorage("finalPeople");
     const finalScores = getDataFromLocalStorage("finalScores");
 
     // 로직
     if (finalPeople && finalScores) {
       const finalData: Player[] = (finalPeople as FinalPeopleProps[])
-      .filter(person => finalScores[person.ownerId] !== undefined) // 점수가 있는 사람만 매칭
-      .map(person => ({
-        name: person.name,
-        score: finalScores[person.ownerId],
-      }));
+        .filter((person) => finalScores[person.ownerId] !== undefined) // 점수가 있는 사람만 매칭
+        .map((person) => ({
+          name: person.name,
+          score: finalScores[person.ownerId],
+        }));
 
-      setFinalData(finalData);    
+      setFinalData(finalData);
     }
-    
-  },[])
-  
-  if(!finalData) return;
+  }, []);
+
+  if (!finalData) return;
 
   //todo: 실제로 받아온 정보로 나중에는 슬라이싱해서 ranking sheet에 넘기기.
   const sortedPlayers = finalData.sort((a, b) => b.score - a.score);
@@ -53,12 +50,18 @@ export default function GameEnd() {
 
   return (
     <>
-      <Header title="최종 스코어" button2Type="next" button2Action={()=>{router.push("/all-cards")}}/>
-      <main className="flex flex-col items-center bg-gray-1 w-[cal(100% + 4rem)] -mx-[2rem] ">
+      <Header
+        title="최종 스코어"
+        button2Type="next"
+        padding={false}
+        button2Action={() => {
+          router.push("/all-cards");
+        }}
+      />
+      <main className="w-[cal(100% + 4rem)] -mx-[2rem] flex flex-col items-center bg-gray-1">
         <BarGraph players={finalData} />
         <RankingSheet otherPlayers={otherPlayers} />
       </main>
     </>
   );
 }
-
