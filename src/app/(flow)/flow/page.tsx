@@ -173,7 +173,9 @@ const Flow = () => {
     };
 
     fetchHostStatus();
+  }, [roomId]);
 
+  useEffect(() => {
     //여기서 다시 연결
     console.log("연결 중!");
     socketRef.current = io("https://talkspark.site/", {
@@ -292,7 +294,7 @@ const Flow = () => {
       socketRef.current?.disconnect();
       socketRef.current = null; //메모리 누수 방지
     };
-  }, []);
+  }, [isHost]);
 
   useEffect(() => {
     if (correctedPeople) {
