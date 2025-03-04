@@ -177,8 +177,8 @@ const Page = () => {
                 // 동일한 사람과 시간에 대해서 첫 번째 메시지에만 프로필 이미지를 표시
                 const isFirstOfSameUserAndTime =
                   index === 0 ||
-                  data.sparkUserName !==
-                    guestDetailData.guestBookData[index - 1]?.sparkUserName ||
+                  data.guestBookId !==
+                    guestDetailData.guestBookData[index - 1]?.guestBookId ||
                   formatTimeWithMeridiem(data.guestBookDateTime) !==
                     formatTimeWithMeridiem(
                       guestDetailData.guestBookData[index - 1]
