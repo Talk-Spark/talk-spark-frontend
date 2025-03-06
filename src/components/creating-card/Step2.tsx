@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../common/Button";
-import { StepProps } from "./Step1";
 import InputField from "./InputField";
+import { StepProps } from "./Step1";
 
 const Step2 = ({ onNext, formData, onChange }: StepProps) => {
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    setIsFormValid(!!formData.mbti && !!formData.hobby && !!formData.lookAlike);
+  }, [formData]);
+
   const fields = [
     {
       label: "나의 MBTI 유형은?",
@@ -42,10 +48,10 @@ const Step2 = ({ onNext, formData, onChange }: StepProps) => {
       <div className="flex flex-col gap-[5.2rem]">
         <div>
           <h2 className="mb-[0.8rem] text-headline-3 text-black">
-            선택 정보를 입력해 주세요
+            기본 정보를 입력해 주세요
           </h2>
           <p className="text-body-2-med text-gray-9">
-            문항을 모두 입력하지 않으면 게임 선택에 제한이 있어요!
+            TalkSpark에서 나만의 명함을 만들어 보세요!
           </p>
         </div>
         <div className="flex flex-col gap-[3.6rem]">
@@ -63,7 +69,13 @@ const Step2 = ({ onNext, formData, onChange }: StepProps) => {
           ))}
         </div>
       </div>
-      <Button onClick={onNext}>다음으로</Button>
+      <Button
+        onClick={onNext}
+        variant={isFormValid ? "black" : "gray"}
+        disabled={!isFormValid}
+      >
+        다음으로
+      </Button>
     </div>
   );
 };

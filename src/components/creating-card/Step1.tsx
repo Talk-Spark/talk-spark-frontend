@@ -1,7 +1,7 @@
+import { FormData } from "@/src/app/(onBoarding)/creating-card/page";
 import { useEffect, useState } from "react";
 import Button from "../common/Button";
 import InputField from "./InputField";
-import { FormData } from "@/src/app/(onBoarding)/creating-card/page";
 
 export type StepProps = {
   onNext: () => void;
@@ -100,9 +100,6 @@ const Step1 = ({ onNext, formData, onChange }: StepProps) => {
         <div>
           <h2 className="relative mb-[0.8rem] text-headline-3 text-black">
             기본 정보를 입력해 주세요
-            <span className="absolute top-0 text-body-2-med text-main-pink">
-              *
-            </span>
           </h2>
           <p className="text-body-2-med text-gray-9">
             TalkSpark에서 나만의 명함을 만들어 보세요!
