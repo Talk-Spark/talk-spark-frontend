@@ -1,9 +1,8 @@
-import React from "react";
-import Button from "../common/Button";
-import ProfileImage from "../ProfileImage";
+import { post } from "@/src/apis";
 import { FormData } from "@/src/app/(onBoarding)/creating-card/page";
 import { useRouter } from "next/navigation";
-import { post } from "@/src/apis";
+import Button from "../common/Button";
+import ProfileImage from "../ProfileImage";
 
 interface CardResponse {
   data: {
@@ -46,9 +45,6 @@ const Step4 = ({ formData, onChange }: Step4Props) => {
         <div>
           <h2 className="relative mb-[0.8rem] text-headline-3 text-black">
             내 명함을 선택해 주세요
-            <span className="absolute top-0 text-body-2-med text-main-pink">
-              *
-            </span>
           </h2>
           <p className="text-body-2-med text-gray-9">
             나중에 명함 보관함에서 확인하실 수 있어요!
