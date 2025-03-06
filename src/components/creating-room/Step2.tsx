@@ -1,8 +1,8 @@
 import { RoomDataForm } from "@/src/app/creating-room/page";
-import Button from "../common/Button";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import IconButton from "@mui/material/IconButton";
+import Button from "../common/Button";
 
 interface Step2Props {
   onNext: () => void;
@@ -53,9 +53,6 @@ const Step2 = ({ onNext, formData, onChange }: Step2Props) => {
       <div>
         <h2 className="relative mb-[8rem] text-headline-3 text-black">
           총 몇 명인가요?
-          <span className="absolute top-0 text-body-2-med text-main-pink">
-            *
-          </span>
         </h2>
         <div className="flex h-[6rem] items-center justify-between rounded-[1.2rem] border-[1px] border-gray-3 bg-gray-1 px-[7.2rem] py-[1.2rem]">
           <IconButton onClick={handleDecrease}>

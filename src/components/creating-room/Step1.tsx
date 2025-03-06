@@ -1,11 +1,11 @@
-import { RoomDataForm } from "@/src/app/creating-room/page";
-import InputField from "../creating-card/InputField";
-import Button from "../common/Button";
-import { useEffect, useState } from "react";
-import { debounce } from "lodash";
 import { instance } from "@/src/apis";
-import ErrorOutline from "@mui/icons-material/ErrorOutline";
+import { RoomDataForm } from "@/src/app/creating-room/page";
 import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
+import { debounce } from "lodash";
+import { useEffect, useState } from "react";
+import Button from "../common/Button";
+import InputField from "../creating-card/InputField";
 
 interface Step1Props {
   onNext: () => void;
@@ -53,9 +53,6 @@ const Step1 = ({ onNext, formData, onChange }: Step1Props) => {
       <div>
         <h2 className="relative mb-[8rem] text-headline-3 text-black">
           팀 방 이름은 무엇인가요?
-          <span className="absolute top-0 text-body-2-med text-main-pink">
-            *
-          </span>
         </h2>
         <div className="relative">
           <InputField
