@@ -1,9 +1,8 @@
 // 명함 저장소
+import { instance } from "@/src/apis";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NameCardComponent from "./NameCardComponent";
-import { instance } from "@/src/apis";
-import Image from "next/image";
-import deafultPink from "@/public/Image/home/defultPink.svg";
 
 // 팀 내 명함 정보
 export interface cards {
@@ -49,6 +48,8 @@ const CardStorage = () => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const fetchStoredCards = async () => {
     try {
@@ -103,18 +104,17 @@ const CardStorage = () => {
   }
 
   if (error) {
-    return (
-      <div className="text-body-1-med text-gray-7">
-        {error}{" "}
-      </div>
-    );
+    return <div className="text-body-1-med text-gray-7">{error} </div>;
   }
 
   return (
     <div className="flex gap-[1.6rem] overflow-x-auto">
       {/* 최대 5개 렌더링 */}
       {teams.slice(0, 5).map((team, index) => (
-        <div key={`key-${index}`}>
+        <div
+          key={`key-${index}`}
+          onClick={() => router.push(`/card?view=others`)}
+        >
           <NameCardComponent
             name={team.teamName}
             storedCards={team.cards || []}

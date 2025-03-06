@@ -1,9 +1,8 @@
 // 방명록 저장소
+import { instance } from "@/src/apis";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import GuestBookComponent from "./GuestBookComponent";
-import { instance } from "@/src/apis";
-import Image from "next/image";
-import deafultPink from "@/public/Image/home/defultPink.svg";
 
 export interface GuestBookRoom {
   roomId: number;
@@ -18,6 +17,8 @@ const BookStorage = () => {
   const [guestBookRooms, setGuestBookRooms] = useState<GuestBookRoom[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const fetchGuestBookRooms = async () => {
     try {
@@ -66,7 +67,10 @@ const BookStorage = () => {
   return (
     <div className="flex gap-[1.6rem] overflow-x-auto">
       {guestBookRooms.slice(0, 5).map((room) => (
-        <div key={room.roomId}>
+        <div
+          key={room.roomId}
+          onClick={() => router.push(`/guest-book/${room.roomId}`)}
+        >
           <GuestBookComponent
             name={room.roomName}
             messages={room.preViewContent}
