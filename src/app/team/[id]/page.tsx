@@ -143,7 +143,6 @@ const TeamDetail = () => {
           //방 퇴장시
           //console.log(gameStart);
           if (!gameStartRef.current) {
-            console.log("나간다");
             socketRef.current.emit("leaveRoom", {
               roomId: id,
               accessToken: user.accessToken,

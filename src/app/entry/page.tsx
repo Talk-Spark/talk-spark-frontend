@@ -19,6 +19,10 @@ interface GameRoom {
   maxPeople: number;
 }
 
+interface Room {
+  roomName: string;
+}
+
 const Entry = () => {
   const router = useRouterWrapper();
   const [searchValue, setSearchValue] = useState<string>("");
@@ -34,25 +38,49 @@ const Entry = () => {
     localStorage.removeItem("isGameHost"); //entry를 통해 접근하는 사람은 방장이 아닌 것으로 치부.
   }, []);
 
+  const handleSearch = async () => {
+    setFilteredRooms([]);
+    const keyword = searchValue.trim().toLowerCase(); // 검색어를 소문자로 변환
+
+    const calculateSimilarity = (str1: string, str2: string): number => {
+      // 간단한 유사도 계산: 검색어가 포함된 위치와 길이 비교
+      const index = str1.indexOf(str2);
+      return index !== -1 ? str2.length - index : -1; // 일치 길이 - 포함된 위치
+    };
+
+    setFilteredRooms([]); // 필터링 전에 초기화
+
+    try {
+      const response = await instance.get("/api/rooms", {
+        params: { searchName: searchValue }, // 검색어를 쿼리 매개변수로 전달
+      });
+
+      // 검색된 데이터에서 유사도 기준으로 필터링 및 정렬
+      const filteredRooms: GameRoom[] = response.data
+        .filter(
+          (room: GameRoom) =>
+            calculateSimilarity(room.roomName.toLowerCase(), keyword) !== -1,
+        ) // 유사도가 0 이상인 것만 필터링
+        .sort(
+          (a: GameRoom, b: GameRoom) =>
+            calculateSimilarity(b.roomName.toLowerCase(), keyword) -
+            calculateSimilarity(a.roomName.toLowerCase(), keyword), // 유사도 기준으로 정렬
+        );
+
+      setFilteredRooms(filteredRooms);
+      console.log(response.data);
+      console.log(filteredRooms);
+    } catch (err) {
+      console.error("Error fetching team data:", err);
+    }
+  };
+
   // 방 검색하기 api
   useEffect(() => {
     if (isFirst) {
       handleSearch();
     }
   }, [searchValue]);
-
-  const handleSearch = async () => {
-    setFilteredRooms([]);
-    try {
-      const response = await instance.get("/api/rooms", {
-        params: { searchName: searchValue }, // 검색어를 쿼리 매개변수로 전달
-      });
-      setFilteredRooms(response.data);
-      console.log(response.data);
-    } catch (err) {
-      console.error("Error fetching team data:", err);
-    }
-  };
 
   const headerBtn1 = () => {
     if (isCamera) {

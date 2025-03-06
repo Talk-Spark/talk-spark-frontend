@@ -40,7 +40,14 @@ export interface NameCardObjProps {
 
 export interface singleQuestionObjProps {
   sparkUserId: number;
-  correct: boolean;
+  isCorrect: boolean;
+  color: "PINK" | "MINT" | "YELLOW" | "BLUE";
+  name: string;
+}
+
+export interface Props {
+  sparkUserId: number;
+  isCorrect: boolean;
   color: "PINK" | "MINT" | "YELLOW" | "BLUE";
   name: string;
 }
@@ -194,7 +201,7 @@ const Flow = () => {
 
     //todo: 명함 하나 공개, 전체 공개와 관련된 로직 구성하기 - 맞출 사람이 더 남은 경우
     socketRef.current.on("singleResult", (data: StorageCardProps) => {
-      //console.log(data);
+      console.log("singleResult 데이터:", data); // 데이터 출력
 
       setIsQuizEnd(true);
 
@@ -213,7 +220,7 @@ const Flow = () => {
       });
     });
     socketRef.current.on("lastResult", (data: StorageCardProps) => {
-      //console.log(data);
+      console.log("lastResult 데이터:", data); // 데이터 출력
 
       setIsQuizEnd(true);
       setIsAllCorrect(false);
@@ -241,6 +248,12 @@ const Flow = () => {
         QuizData: QuizDataProps,
         teamName: string,
       ) => {
+        console.log("question 데이터:", {
+          profileData,
+          blankData,
+          QuizData,
+          teamName,
+        }); // 데이터 출력
         setNameCardInfo({
           teamName: teamName,
           name: profileData.name,
@@ -260,13 +273,11 @@ const Flow = () => {
     );
 
     //todo: 현재 이 메세지 안옴(서버 문제)
-    socketRef.current.on(
-      "singleQuestionScoreBoard",
-      (data: singleQuestionObjProps[]) => {
-        setCorrectedPeople(data as singleQuestionObjProps[]);
-        setIsBefore(false);
-      },
-    );
+    socketRef.current.on("singleQuestionScoreBoard", (data: Props[]) => {
+      setCorrectedPeople(data as singleQuestionObjProps[]);
+      setIsBefore(false);
+      console.log("singleQuestionScoreBoard 데이터:", data); // 데이터 출력
+    });
 
     // 최종 스코어 가져오기
     socketRef.current.on(
@@ -288,7 +299,7 @@ const Flow = () => {
   useEffect(() => {
     if (correctedPeople) {
       const isAllCorrect = correctedPeople.every(
-        (person) => person.correct === true,
+        (person) => person.isCorrect === true,
       );
       setIsAllCorrect(isAllCorrect);
       console.log(isAllCorrect);
@@ -337,7 +348,10 @@ const Flow = () => {
                 quizInfo?.options as string[],
                 quizInfo?.correctAnswer as string,
               )}
-              answerCount={correctedPeople?.length as number}
+              answerCount={
+                correctedPeople?.filter((person) => person.isCorrect)
+                  .length as number
+              }
               isAllCorrect={isAllCorrect}
               storageCard={storageCard as StorageCardProps}
             />

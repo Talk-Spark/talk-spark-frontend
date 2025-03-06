@@ -15,7 +15,7 @@ const Arrow: React.FC<ArrowProps> = ({
   currentIndex,
 }) => {
   return (
-    <div className="mt-[1.6rem] flex justify-center gap-[2rem]">
+   <div className="mt-[1.6rem] flex justify-center gap-[2rem]">
       <div onClick={previous}>
         <Image
           className="h-[2.4rem] w-[2.4rem]"
@@ -45,3 +45,4 @@ const Arrow: React.FC<ArrowProps> = ({
   );
 };
 export default Arrow;
+ 

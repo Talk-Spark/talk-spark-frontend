@@ -104,7 +104,9 @@ const TeamBox = (props: TeamBoxProps) => {
       ? `${team.teamNames.slice(0, maxVisible).join(" ")} ...`
       : team?.teamNames.join(" ");
 
-  const content = team ? displayedParticipants : room && room.preViewContent;
+  const content = team
+    ? displayedParticipants
+    : (room && room.preViewContent) || "";
 
   const getPreviewContent = (content?: string) => {
     if (ver === "방명록" && content) {
