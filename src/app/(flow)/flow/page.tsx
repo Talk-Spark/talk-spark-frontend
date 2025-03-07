@@ -47,7 +47,7 @@ export interface singleQuestionObjProps {
 
 export interface Props {
   sparkUserId: number;
-  isCorrect: boolean;
+  correct: boolean;
   color: "PINK" | "MINT" | "YELLOW" | "BLUE";
   name: string;
 }
@@ -274,9 +274,14 @@ const Flow = () => {
 
     //todo: 현재 이 메세지 안옴(서버 문제)
     socketRef.current.on("singleQuestionScoreBoard", (data: Props[]) => {
-      setCorrectedPeople(data as singleQuestionObjProps[]);
+      const formattedData: singleQuestionObjProps[] = data.map((item) => ({
+        ...item,
+        correct: item.correct ?? false, // 서버에서 받으면 유지, 없으면 false
+      }));
+
+      setCorrectedPeople(formattedData);
       setIsBefore(false);
-      console.log("singleQuestionScoreBoard 데이터:", data); // 데이터 출력
+      console.log("singleQuestionScoreBoard 데이터:", formattedData);
     });
 
     // 최종 스코어 가져오기
