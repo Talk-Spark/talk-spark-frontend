@@ -41,11 +41,9 @@ const YourTalk = ({
             <div className="flex items-center rounded-[1.2rem] bg-white px-[1.2rem] py-[0.6rem] text-body-1-med text-gray-12">
               {content}
             </div>
-            {shouldShowTime && (
-              <span className="mt-[0.4rem] flex items-end text-caption-med text-gray-6">
-                {formatTimeWithMeridiem(dateTime)}
-              </span>
-            )}
+            <span className="mt-[0.4rem] flex items-end text-caption-med text-gray-6">
+              {formatTimeWithMeridiem(dateTime)}
+            </span>
           </div>
         </div>
       </div>

@@ -28,13 +28,13 @@ const AllCards = () => {
     null,
   );
   const router = useRouter();
-  const [roomId, setRoomId] = useState<string | null>(null);
+  const [roomId, setRoomId] = useState<number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const slickRef = useRef<Slider | null>(null);
 
   useEffect(() => {
-    const storedRoomId = localStorage.getItem("roomId");
-    setRoomId(storedRoomId);
+    // const storedRoomId = localStorage.getItem("roomId");
+    // setRoomId(storedRoomId);
 
     const finalPeople: FinalPeopleProps[] =
       getDataFromLocalStorage("finalPeople");
@@ -64,26 +64,26 @@ const AllCards = () => {
   };
 
   useEffect(() => {
-    const newGuestBook = async () => {
-      await instance.post(`/api/guest-books/create?roomId=${roomId}`);
+    const fetchRoomId = async () => {
+      try {
+        const response = await instance.get(`/api/guest-books/room-id`);
+        setRoomId(response.data.data.roomId);
+        console.log("API 응답:", response.data);
+        console.log("roomId:", response.data.data.roomId);
+      } catch (error) {
+        console.error("Error fetching roomId:", error);
+      }
     };
 
+    fetchRoomId();
     localStorage.setItem("gameEnd", JSON.stringify(true));
-
-    if (roomId) {
-      newGuestBook();
-      console.log("방명록 생성");
-    }
-  }, [roomId]);
+  }, []);
 
   const headerBtn2 = () => {
     if (roomId) {
-      const numericRoomId = parseInt(roomId, 10);
-
-      // 숫자로 변환된 roomId를 사용하여 라우팅
-      router.push(`/guest-book/${numericRoomId}`);
+      router.push(`/guest-book/${roomId}`);
     } else {
-      console.error("roomId is not found in localStorage.");
+      console.log("roomId is null");
     }
   };
 

@@ -40,7 +40,7 @@ export interface NameCardObjProps {
 
 export interface singleQuestionObjProps {
   sparkUserId: number;
-  isCorrect: boolean;
+  correct: boolean;
   color: "PINK" | "MINT" | "YELLOW" | "BLUE";
   name: string;
 }
@@ -104,18 +104,18 @@ export interface StorageCardProps {
 }
 
 export interface FinalPeopleProps {
-  age: number;
-  cardThema: "PINK" | "MINT" | "YELLOW" | "BLUE";
-  hobby: string;
   id: number;
   kakaoId: string;
-  lookAlike: string;
+  name: string;
+  age: number;
   major: string;
   mbti: string;
-  name: string;
-  ownerId: number;
+  hobby: string;
+  lookAlike: string;
   selfDescription: string;
   tmi: string;
+  ownerId: number;
+  cardThema: "PINK" | "MINT" | "YELLOW" | "BLUE";
 }
 
 interface ScoresProps {
@@ -280,15 +280,15 @@ const Flow = () => {
     });
 
     // 최종 스코어 가져오기
-    socketRef.current.on(
-      "scores",
-      (scores: ScoresProps, data: FinalPeopleProps[]) => {
-        //data를 localStorage에 잘 저장해두었다가, /game-end 에서 사용하여 렌더링하도록 만들기.
-        router.push("/game-end"); //최종스코어 창으로 이동!
-        localStorage.setItem("finalScores", JSON.stringify(scores)); //todo: data 형식 잘 확인하고, 보내기, 나중에 이동한 game-end에서 잘 받아와서 사용하기
-        localStorage.setItem("finalPeople", JSON.stringify(data));
-      },
-    );
+    // socketRef.current.on(
+    //   "scores",
+    //   (scores: ScoresProps, data: FinalPeopleProps[]) => {
+    //     //data를 localStorage에 잘 저장해두었다가, /game-end 에서 사용하여 렌더링하도록 만들기.
+    //     router.push("/game-end"); //최종스코어 창으로 이동!
+    //     localStorage.setItem("finalScores", JSON.stringify(scores)); //todo: data 형식 잘 확인하고, 보내기, 나중에 이동한 game-end에서 잘 받아와서 사용하기
+    //     localStorage.setItem("finalPeople", JSON.stringify(data));
+    //   },
+    // );
 
     return () => {
       socketRef.current?.disconnect();
@@ -299,7 +299,7 @@ const Flow = () => {
   useEffect(() => {
     if (correctedPeople) {
       const isAllCorrect = correctedPeople.every(
-        (person) => person.isCorrect === true,
+        (person) => person.correct === true,
       );
       setIsAllCorrect(isAllCorrect);
       console.log(isAllCorrect);
@@ -349,7 +349,7 @@ const Flow = () => {
                 quizInfo?.correctAnswer as string,
               )}
               answerCount={
-                correctedPeople?.filter((person) => person.isCorrect)
+                correctedPeople?.filter((person) => person.correct)
                   .length as number
               }
               isAllCorrect={isAllCorrect}

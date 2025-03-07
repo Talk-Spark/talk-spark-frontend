@@ -20,6 +20,36 @@ import {
 import { getUserData } from "@/src/utils";
 import { post } from "@/src/apis";
 
+// 최종 결과 타입 정의
+export interface FinalPeopleProps {
+  id: number;
+  kakaoId: string;
+  name: string;
+  age: number;
+  major: string;
+  mbti: string;
+  hobby: string;
+  lookAlike: string;
+  selfDescription: string;
+  tmi: string;
+  ownerId: number;
+  cardThema: "PINK" | "MINT" | "YELLOW" | "BLUE";
+}
+
+interface ScoresProps {
+  [ownerId: number]: number;
+}
+
+// 게임 종료 API 응답 타입
+interface GameEndResponse {
+  status: number;
+  message: string;
+  data: {
+    scores: ScoresProps;
+    allPlayedCards: FinalPeopleProps[];
+  };
+}
+
 interface AfterSelectProps {
   cardStep: number;
   setIsBefore: Dispatch<SetStateAction<boolean>>;
@@ -65,14 +95,31 @@ const AfterSelect = ({
   const handleNextPerson = async () => {
     socketRef.current.emit("next", { roomId });
 
-    //최종 스코어 보기
+    // 최종 스코어 보기
+    // 추가 : 방장 + 사용자 모두가 각자 클릭 해야함
     if (isGameEnd) {
       const requestData = {
         roomId: roomId,
         playerId: user?.sparkUserId,
       };
 
-      const res = await post("/api/game/end", requestData);
+      const res = await post<GameEndResponse>("/api/game/end", requestData);
+      if (res.data) {
+        const responseData = res.data.data;
+        // responseData.scores가 문자열이면 JSON.parse() 적용
+        const finalScores: ScoresProps =
+          typeof responseData.scores === "string"
+            ? JSON.parse(responseData.scores)
+            : responseData.scores;
+
+        localStorage.setItem("finalScores", JSON.stringify(finalScores));
+
+        localStorage.setItem(
+          "finalPeople",
+          JSON.stringify(responseData.allPlayedCards),
+        );
+      }
+      router.push("/game-end"); //최종스코어 창으로 이동!
     }
   };
 
@@ -124,7 +171,7 @@ const AfterSelect = ({
                   {correctedPeople.map((person) => (
                     <ProfileImage
                       key={person.sparkUserId}
-                      isSelected={person.isCorrect}
+                      isSelected={person.correct}
                       color={person.color}
                     >
                       {person.name}

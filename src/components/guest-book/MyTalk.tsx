@@ -19,11 +19,10 @@ const MyTalk = ({
       {/* 말풍선 */}
       <div className="flex items-end gap-[0.4rem]">
         {/* 시간 표시 여부 조건부 렌더링 */}
-        {shouldShowTime && (
-          <span className="min-w-[5.4rem] flex-1 text-caption-med text-gray-6">
-            {formatTimeWithMeridiem(dateTime)}
-          </span>
-        )}
+        <span className="min-w-[5.4rem] flex-1 text-caption-med text-gray-6">
+          {formatTimeWithMeridiem(dateTime)}
+        </span>
+
         <div className="whitespace-pre-wrap rounded-[1.2rem] bg-sub-palePink px-[1.2rem] py-[0.6rem] text-body-1-med text-gray-12">
           {content}
         </div>
