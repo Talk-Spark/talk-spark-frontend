@@ -86,18 +86,35 @@ const StorageNameCard: React.FC<NameCardProps> = ({
     if (!cardRef.current) return;
 
     try {
-      const dataUrl = await toSvg(cardRef.current, {
+      // 1. SVG 변환
+      const svgDataUrl = await toSvg(cardRef.current, {
         cacheBust: true,
         includeQueryParams: true,
         filter,
       });
 
-      const link = document.createElement("a");
-      link.download = "명함.svg";
-      link.href = dataUrl;
-      link.click();
+      // 2. SVG를 이미지로 로드
+      const img = new Image();
+      img.src = svgDataUrl;
+      img.onload = () => {
+        // 3. Canvas 생성 및 그리기
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        ctx.drawImage(img, 0, 0);
+
+        // 4. PNG 변환 및 다운로드
+        const pngDataUrl = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.download = "명함.png";
+        link.href = pngDataUrl;
+        link.click();
+      };
     } catch (err) {
-      console.error("SVG 다운로드 중 오류 발생:", err);
+      console.error("PNG 다운로드 중 오류 발생:", err);
     }
   };
 
