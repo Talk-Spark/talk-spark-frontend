@@ -86,11 +86,14 @@ const StorageNameCard: React.FC<NameCardProps> = ({
     const cardElement = cardRef.current;
     if (!cardElement) return;
 
-    const targetSize = 100 * 1024; // 100KB를 바이트로 설정
+    // iOS 환경 확인
+    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    // 파일 크기 제한 설정: iOS일 경우 400KB, 아니면 100KB
+    const targetSize = isIos ? 400 * 1024 : 100 * 1024;
     let fileSize = 0;
 
     const filter = (node: HTMLElement) => {
-      // 편집, 다운로드 버튼 제거
       if (node.tagName === "BUTTON") {
         return false;
       }
@@ -109,17 +112,17 @@ const StorageNameCard: React.FC<NameCardProps> = ({
         });
 
         // 이미지 크기 체크
-        fileSize = dataUrl.length * (3 / 4); // Base64로 인코딩된 데이터 URL 크기 계산 (3/4로 나눈 이유는 Base64 인코딩의 패딩을 고려)
+        fileSize = dataUrl.length * (3 / 4); // Base64로 인코딩된 데이터 URL 크기 계산
         console.log("파일 크기:", fileSize);
 
         if (fileSize >= targetSize) {
-          // 크기가 100KB 이상일 경우 다운로드
+          // 크기가 targetSize 이상일 경우 다운로드
           const link = document.createElement("a");
           link.download = "명함.png";
           link.href = dataUrl;
           link.click();
         } else {
-          // 크기가 100KB 미만일 경우 다시 시도
+          // 크기가 targetSize 미만일 경우 다시 시도
           console.log("파일 크기가 작음. 다시 시도합니다.");
           setTimeout(attemptDownload, 250); // 250ms 후에 다시 시도
         }
