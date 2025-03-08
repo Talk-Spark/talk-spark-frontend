@@ -65,6 +65,7 @@ const StorageNameCard: React.FC<NameCardProps> = ({
     sparkUserId: oneCard?.ownerId,
     ...oneCard,
   });
+
   const selectedColor = putData ? putData.cardThema : oneCard.cardThema;
   //console.log(oneCard);
 
@@ -81,39 +82,22 @@ const StorageNameCard: React.FC<NameCardProps> = ({
     );
   };
 
-  // 명함 이미지 저장 html-to-image
-  const handleDownload = () => {
-    const cardElement = cardRef.current;
-    if (cardElement) {
-      //console.log("Card ref saved.");
-      // 작동하나 몇 요소가 느리게 저장됨
-      setTimeout(() => {
-        const filter = (node: HTMLElement) => {
-          // 편집, 다운로드 버튼 제거
-          if (node.tagName === "BUTTON") {
-            return false;
-          }
-          const exclusionClasses = ["remove-me", "secret-div"];
-          return !exclusionClasses.some((classname) =>
-            node.classList?.contains(classname),
-          );
-        };
+  const handleDownload = async () => {
+    if (!cardRef.current) return;
 
-        toPng(cardElement, {
-          cacheBust: true,
-          includeQueryParams: true,
-          filter: filter,
-        })
-          .then((dataUrl) => {
-            const link = document.createElement("a");
-            link.download = "명함.png";
-            link.href = dataUrl;
-            link.click();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }, 2500); // 지연 시간 증가 테스트
+    try {
+      const dataUrl = await toPng(cardRef.current, {
+        cacheBust: true,
+        includeQueryParams: true,
+        filter,
+      });
+
+      const link = document.createElement("a");
+      link.download = "명함.png";
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Image download error:", err);
     }
   };
 
