@@ -253,7 +253,7 @@ const BarGraph = ({ players }: BarGraphProps) => {
         : topThree?.map((player, idx) => (
             <div
               key={`topThree-${idx}`}
-              className="w-[8rem] shrink-0 rounded-[12px] bg-transparent transition-all duration-1000 ease-out"
+              className="w-[8rem] shrink-0 rounded-[12px] bg-transparent transition-all duration-1000 ease-out "
               style={{
                 position: "absolute",
                 bottom: "-25px",

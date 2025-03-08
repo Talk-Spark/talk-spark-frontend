@@ -7,7 +7,7 @@ interface RankingSheetProps {
 
 const RankingSheet = ({ otherPlayers }: RankingSheetProps) => {
   return (
-    <section className="fixed top-[32.5rem] z-10 flex h-[43.9rem] w-full flex-col items-center self-stretch rounded-b-[0px] rounded-t-[24px] bg-white pb-[12.7rem] pl-[2rem] pr-[2rem] pt-[2rem] shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)]">
+    <section className="fixed top-[32.5rem] z-10 flex h-[43.9rem] w-full max-w-[76.8rem] flex-col items-center self-stretch rounded-b-[0px] rounded-t-[24px] bg-white pb-[12.7rem] pl-[2rem] pr-[2rem] pt-[2rem] shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)]">
       {otherPlayers.map((player, idx) => (
         <article
           className="mb-[8px] flex h-[5.2rem] items-center justify-between self-stretch rounded-[1.2rem] border-[1.2px] border-gray-4 bg-white pb-[1.2rem] pl-[1.2rem] pr-[2.2rem] pt-[1.2rem]"
