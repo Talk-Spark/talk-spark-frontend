@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import CardTop from "./Storage/card/CardTop";
 import CardBottom from "./Storage/card/CardBotttom";
-import { toPng } from "html-to-image";
+import { toPng, toSvg } from "html-to-image";
 
 type CardDataProps = {
   // 기본 정보
@@ -86,18 +86,18 @@ const StorageNameCard: React.FC<NameCardProps> = ({
     if (!cardRef.current) return;
 
     try {
-      const dataUrl = await toPng(cardRef.current, {
+      const dataUrl = await toSvg(cardRef.current, {
         cacheBust: true,
         includeQueryParams: true,
         filter,
       });
 
       const link = document.createElement("a");
-      link.download = "명함.png";
+      link.download = "명함.svg";
       link.href = dataUrl;
       link.click();
     } catch (err) {
-      console.error("Image download error:", err);
+      console.error("SVG 다운로드 중 오류 발생:", err);
     }
   };
 
