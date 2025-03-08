@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import CardTop from "./Storage/card/CardTop";
 import CardBottom from "./Storage/card/CardBotttom";
-import { toPng, toSvg } from "html-to-image";
+import { toPng } from "html-to-image";
 
 type CardDataProps = {
   // 기본 정보
@@ -65,7 +65,6 @@ const StorageNameCard: React.FC<NameCardProps> = ({
     sparkUserId: oneCard?.ownerId,
     ...oneCard,
   });
-
   const selectedColor = putData ? putData.cardThema : oneCard.cardThema;
   //console.log(oneCard);
 
@@ -82,40 +81,55 @@ const StorageNameCard: React.FC<NameCardProps> = ({
     );
   };
 
+  // 명함 이미지 저장 html-to-image
   const handleDownload = async () => {
-    if (!cardRef.current) return;
+    const cardElement = cardRef.current;
+    if (!cardElement) return;
 
-    try {
-      // 1. SVG 변환
-      const svgDataUrl = await toSvg(cardRef.current, {
-        cacheBust: true,
-        includeQueryParams: true,
-        filter,
-      });
+    const targetSize = 100 * 1024; // 100KB를 바이트로 설정
+    let fileSize = 0;
 
-      // 2. SVG를 이미지로 로드
-      const img = new Image();
-      img.src = svgDataUrl;
-      img.onload = () => {
-        // 3. Canvas 생성 및 그리기
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
+    const filter = (node: HTMLElement) => {
+      // 편집, 다운로드 버튼 제거
+      if (node.tagName === "BUTTON") {
+        return false;
+      }
+      const exclusionClasses = ["remove-me", "secret-div"];
+      return !exclusionClasses.some((classname) =>
+        node.classList?.contains(classname),
+      );
+    };
 
-        ctx.drawImage(img, 0, 0);
+    const attemptDownload = async () => {
+      try {
+        const dataUrl = await toPng(cardElement, {
+          cacheBust: true,
+          includeQueryParams: true,
+          filter: filter,
+        });
 
-        // 4. PNG 변환 및 다운로드
-        const pngDataUrl = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.download = "명함.png";
-        link.href = pngDataUrl;
-        link.click();
-      };
-    } catch (err) {
-      console.error("PNG 다운로드 중 오류 발생:", err);
-    }
+        // 이미지 크기 체크
+        fileSize = dataUrl.length * (3 / 4); // Base64로 인코딩된 데이터 URL 크기 계산 (3/4로 나눈 이유는 Base64 인코딩의 패딩을 고려)
+        console.log("파일 크기:", fileSize);
+
+        if (fileSize >= targetSize) {
+          // 크기가 100KB 이상일 경우 다운로드
+          const link = document.createElement("a");
+          link.download = "명함.png";
+          link.href = dataUrl;
+          link.click();
+        } else {
+          // 크기가 100KB 미만일 경우 다시 시도
+          console.log("파일 크기가 작음. 다시 시도합니다.");
+          setTimeout(attemptDownload, 250); // 250ms 후에 다시 시도
+        }
+      } catch (err) {
+        console.error("이미지 변환 중 오류 발생:", err);
+      }
+    };
+
+    // 최초 다운로드 시도
+    attemptDownload();
   };
 
   useEffect(() => {
