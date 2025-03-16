@@ -21,11 +21,13 @@ export interface cards {
 }
 
 interface Team {
+  cardHolderId: number;
   teamName: string;
   cards: cards[];
 }
 
 interface TeamResponse {
+  cardHolderId: number;
   teamName: string;
   cards: {
     storedCardId: number;
@@ -62,6 +64,7 @@ const CardStorage = () => {
       // console.log("data.data: ", data.data);
       // 팀 별로 맵핑
       const formattedTeams = data.data.map((team: TeamResponse) => ({
+        cardHolderId: team.cardHolderId,
         teamName: team.teamName,
         // 팀 내 명함 맵핑
         cards: team.cards.map((card) => ({
@@ -113,7 +116,7 @@ const CardStorage = () => {
       {teams.slice(0, 5).map((team, index) => (
         <div
           key={`key-${index}`}
-          onClick={() => router.push(`/card?view=others`)}
+          onClick={() => router.push(`/card/detail/${team.cardHolderId}`)}
         >
           <NameCardComponent
             name={team.teamName}
