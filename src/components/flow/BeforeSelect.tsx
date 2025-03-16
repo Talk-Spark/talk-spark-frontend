@@ -104,7 +104,14 @@ const BeforeSelect = ({
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedButton, setSelectedButton] = useState(""); //선택하는 거 emit하고 넘어가야함
   const [isAnswerSeleted, setIsAnswerSeleted] = useState(false);
-  // const [questionTips, setQuestionTips] = useState<string[]>([]);
+  const [popupHeight, setPopupHeight] = useState(82); // 기본 높이
+
+  useEffect(() => {
+    if (questionTips) {
+      const lines = questionTips.split("\n").length; // 문단 개수 계산
+      setPopupHeight(26 + lines * 20 + 20); // (위 padding) + (줄 개수 * 줄당 높이) + (아래 padding)
+    }
+  }, [questionTips]);
 
   const popUpRef = useRef<HTMLDivElement | null>(null);
 
@@ -209,13 +216,16 @@ const BeforeSelect = ({
               <Image src={question} alt="quest" onClick={handleOpenPopup} />
               {isPopupOpen && (
                 <div
-                  className="absolute left-[-6px] top-[16px] flex h-[82px] w-[333px] shrink-0 flex-col gap-[0.8rem] pl-[16px] pt-[22px] text-caption-med text-gray-8"
+                  className="flex-c absolute left-[-6px] top-[16px] flex w-[353px] shrink-0 gap-[0.8rem] px-[16px] pb-[10px] pt-[26px] text-caption-med text-gray-8"
                   style={{
+                    height: `${popupHeight}px`,
                     backgroundImage: `url(${popup_bg.src})`,
                     backgroundSize: "cover",
                   }}
                 >
-                  <span className="w-[2rem]">{questionTips}</span>
+                  <span className="h-full text-caption-med text-gray-8">
+                    {questionTips}
+                  </span>
                   {/* <span>{`1. ${questionTips[0]}\n`}</span>
                   {questionTips[1] && <span>{`2. ${questionTips[1]}\n`}</span>} */}
                 </div>
