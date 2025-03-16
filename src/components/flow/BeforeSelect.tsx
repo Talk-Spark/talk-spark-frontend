@@ -215,7 +215,7 @@ const BeforeSelect = ({
                     backgroundSize: "cover",
                   }}
                 >
-                  <span>{questionTips}</span>
+                  <span className="w-[2rem]">{questionTips}</span>
                   {/* <span>{`1. ${questionTips[0]}\n`}</span>
                   {questionTips[1] && <span>{`2. ${questionTips[1]}\n`}</span>} */}
                 </div>
