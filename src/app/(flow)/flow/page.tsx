@@ -143,6 +143,7 @@ const Flow = () => {
   const [isAllCorrect, setIsAllCorrect] = useState(false);
   const [isQuizEnd, setIsQuizEnd] = useState(false);
   const [storageCard, setStorageCard] = useState<StorageCardProps | null>(null);
+  const [questionTips, setQuestionTips] = useState<string>("");
 
   //소켓에서 받아오는 정보들
   const [NameCardInfo, setNameCardInfo] = useState<NameCardObjProps>({
@@ -284,6 +285,10 @@ const Flow = () => {
       console.log("singleQuestionScoreBoard 데이터:", formattedData);
     });
 
+    socketRef.current.on("questionTip", (data: string) => {
+      setQuestionTips(data);
+    });
+
     // 최종 스코어 가져오기
     // socketRef.current.on(
     //   "scores",
@@ -338,6 +343,7 @@ const Flow = () => {
               NameCardInfo={NameCardInfo}
               quizInfo={quizInfo as QuizDataProps}
               fieldHoles={fieldHoles as FieldType[]}
+              questionTips={questionTips}
             />
           ) : (
             <AfterSelect

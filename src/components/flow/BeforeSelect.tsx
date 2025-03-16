@@ -29,6 +29,7 @@ interface BeforeSelectProps {
   socketRef: MutableRefObject<any>;
   roomId: string;
   isHost: boolean;
+  questionTips: string;
 
   //socket으로 받아오는 정보들
   NameCardInfo: NameCardObjProps;
@@ -96,13 +97,14 @@ const BeforeSelect = ({
   NameCardInfo,
   quizInfo,
   fieldHoles,
+  questionTips,
 }: BeforeSelectProps) => {
   const user = getUserData();
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedButton, setSelectedButton] = useState(""); //선택하는 거 emit하고 넘어가야함
   const [isAnswerSeleted, setIsAnswerSeleted] = useState(false);
-  const [questionTips, setQuestionTips] = useState<string[]>([]);
+  // const [questionTips, setQuestionTips] = useState<string[]>([]);
 
   const popUpRef = useRef<HTMLDivElement | null>(null);
 
@@ -166,22 +168,22 @@ const BeforeSelect = ({
     return field;
   };
 
-  useEffect(() => {
-    if (quizInfo) {
-      const getQuestionTip = async () => {
-        try {
-          const response = await get(
-            `/api/rooms/question-tip?field=${convertFieldName(quizInfo.fieldName.toUpperCase())}`,
-          );
-          const questionTips = splitByNewline(response.data as string);
-          setQuestionTips(questionTips);
-        } catch (e) {
-          console.log(e);
-        }
-      };
-      getQuestionTip();
-    }
-  }, [quizInfo]);
+  // useEffect(() => {
+  //   if (quizInfo) {
+  //     const getQuestionTip = async () => {
+  //       try {
+  //         const response = await get(
+  //           `/api/rooms/question-tip?field=${convertFieldName(quizInfo.fieldName.toUpperCase())}`,
+  //         );
+  //         const questionTips = splitByNewline(response.data as string);
+  //         setQuestionTips(questionTips);
+  //       } catch (e) {
+  //         console.log(e);
+  //       }
+  //     };
+  //     getQuestionTip();
+  //   }
+  // }, [quizInfo]);
 
   if (!NameCardInfo || !quizInfo || !popUpRef || !fieldHoles) return;
 
@@ -213,8 +215,9 @@ const BeforeSelect = ({
                     backgroundSize: "cover",
                   }}
                 >
-                  <span>{`1. ${questionTips[0]}\n`}</span>
-                  {questionTips[1] && <span>{`2. ${questionTips[1]}\n`}</span>}
+                  <span>{questionTips}</span>
+                  {/* <span>{`1. ${questionTips[0]}\n`}</span>
+                  {questionTips[1] && <span>{`2. ${questionTips[1]}\n`}</span>} */}
                 </div>
               )}
             </div>
