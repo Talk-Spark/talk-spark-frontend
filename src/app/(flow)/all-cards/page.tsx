@@ -82,6 +82,7 @@ const AllCards = () => {
   const headerBtn2 = () => {
     if (roomId) {
       router.push(`/guest-book/${roomId}`);
+      instance.delete(`/api/game/${roomId}`);
     } else {
       console.log("roomId is null");
     }
