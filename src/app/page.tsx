@@ -58,6 +58,10 @@ async function refreshAccessToken(refreshToken: string) {
       },
     );
 
+    if (response.status === 401) {
+      return null; // 401 오류 시 로그인 페이지로 이동하도록 처리
+    }
+
     if (response.ok) {
       const data = await response.json();
       return {
