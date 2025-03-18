@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { RouterWrapperProvider } from "../components/Router/RouterWrapperProvider";
 import AnimationProvider from "../components/Router/AnimationProvider";
+import AuthCheck from "../components/common/AuthCheck";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,6 +37,7 @@ export default function RootLayout({
           <body
             className={`${geistSans.variable} ${geistMono.variable} bg-white antialiased`}
           >
+            <AuthCheck /> {/* 로그인 체크 추가 */}
             {/* EditProvider로 감싸서 전체에서 편집 상태 관리 */}
             <HeaderWrapper />
             {/* 375px 이하의 디스플레이인 모든 페이지 양쪽에 20px의 여백 생성 (이후 breakpoint 추가 가능) */}
