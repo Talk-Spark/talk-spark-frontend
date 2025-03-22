@@ -34,6 +34,18 @@ export default function RootLayout({
     <html lang="en">
       <RouterWrapperProvider>
         <AnimationProvider>
+          <Script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-X9CRGPPCFF"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-X9CRGPPCFF');
+  `}
+          </Script>
           <body
             className={`${geistSans.variable} ${geistMono.variable} bg-white antialiased`}
           >
